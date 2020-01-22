@@ -288,10 +288,14 @@ class UploadClient:
             with open(summary_file_path, 'wb') as summary_file:
                 json.dump(final_summary, summary_file, sort_keys=True, indent=1)
 
+        # FOR THE TIME BEING, SUMMARY IS PRINTED TO THE LOG ONLY
+        logger.info('Summary dictionary of an upload:')
+        logger.info(str(summary_exception))
+
         if num_succeeded == 0:
-            raise NoFilesUploaded(str(summary_exception))
+            raise NoFilesUploaded()
         elif num_succeeded != len(files):
-            raise NotAllFilesUploaded(str(summary_exception))
+            raise NotAllFilesUploaded()
         return 0
 
     def _register_file(self, file, registered_dataset_dids):
