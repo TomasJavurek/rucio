@@ -1,5 +1,6 @@
 {
   "SWIFT": {
+    "site": "TEST",
     "backend_type": "S3",
     "deterministic": true,
     "protocols": {
@@ -27,6 +28,7 @@
     "storage_usage_tool": "rucio.rse.protocols.s3.Default.getSpace"
   },
  "AMAZON-BOTO": {
+    "site": "TEST",
     "backend_type": "S3",
     "deterministic": true,
     "protocols": {
@@ -56,6 +58,7 @@
     "storage_usage_tool": "rucio.rse.protocols.s3boto.Default.getSpace"
   },
   "BNL-BOTO": {
+    "site": "TEST",
     "backend_type": "S3",
     "deterministic": true,
     "protocols": {
@@ -85,6 +88,7 @@
     "storage_usage_tool": "rucio.rse.protocols.s3boto.Default.getSpace"
   },
   "CERN-S3-LOGS": {
+    "site": "TEST",
     "backend_type": "S3",
     "deterministic": true,
     "protocols": {
@@ -114,6 +118,7 @@
     "storage_usage_tool": "rucio.rse.protocols.s3http.Default.getSpace"
   },
   "LXPLUS":{
+    "site": "TEST",
     "backend_type": "SFTP",
     "deterministic": true,
     "protocols": {
@@ -142,6 +147,7 @@
     "storage_usage_tool": "rucio.rse.protocols.sftp.Default.getSpace"
   },
   "MOCK-POSIX":{
+    "site": "TEST",
     "backend_type": "POSIX",
     "deterministic": true,
     "protocols": {
@@ -168,6 +174,7 @@
     "storage_usage_tool": "rucio.rse.protocols.posix.Default.getSpace"
   },
   "MOCK":{
+    "site": "TEST",
     "backend_type": "MOCK",
     "city": "Upton",
     "country_name": "United States",
@@ -237,6 +244,7 @@
     "storage_usage_tool": "rucio.rse.protocols.posix.Default.getSpace"
   },
   "MOCK2":{
+    "site": "TEST",
     "backend_type": "POSIX",
     "deterministic": false,
     "city": "Geneva",
@@ -291,6 +299,7 @@
     "storage_usage_tool": "rucio.rse.protocols.posix.Default.getSpace"
   },
   "MOCK3":{
+    "site": "TEST",
     "backend_type": "POSIX",
     "deterministic": true,
     "city": "Geneva",
@@ -363,33 +372,7 @@
     "storage_usage_tool": "rucio.rse.protocols.posix.Default.getSpace"
   },
   "MOCK4":{
-    "backend_type": "POSIX",
-    "deterministic": true,
-    "protocols": {
-      "default": "file",
-      "supported": {
-        "file": {
-          "prefix": "/tmp/rucio_rse/",
-          "impl": "rucio.rse.protocols.posix.Default",
-          "extended_attributes": {"web_service_path": "/srm/managerv2?SFN=", "space_token": "ATLASDATATAPE"},
-          "domains": {
-            "lan": {
-              "read": 1,
-              "write": 1,
-              "delete": 1
-            },
-            "wan": {
-              "read": 1,
-              "write": 1,
-              "delete": 1
-            }
-          }
-        }
-      }
-    },
-    "storage_usage_tool": "rucio.rse.protocols.posix.Default.getSpace"
-  },
-  "MOCK5":{
+    "site": "TEST",
     "backend_type": "POSIX",
     "deterministic": true,
     "protocols": {
@@ -417,6 +400,7 @@
     "storage_usage_tool": "rucio.rse.protocols.posix.Default.getSpace"
   },
   "MOCK_SUSPICIOUS":{
+    "site": "TEST",
     "backend_type": "POSIX",
     "deterministic": true,
     "protocols": {
@@ -444,6 +428,7 @@
     "storage_usage_tool": "rucio.rse.protocols.posix.Default.getSpace"
   },
   "MOCK_RECOVERY":{
+    "site": "TEST",
     "backend_type": "POSIX",
     "deterministic": true,
     "protocols": {
@@ -471,6 +456,7 @@
     "storage_usage_tool": "rucio.rse.protocols.posix.Default.getSpace"
   },
   "FZK-LCG2_SCRATCHDISK":{
+    "site": "TEST",
     "backend_type": "dCache",
     "protocols": {
       "default": "https",
@@ -517,6 +503,7 @@
     "storage_usage_tool": "rucio.rse.protocols.webdav.Default.getSpace"
   },
   "CERN-PROD_TZERO":{
+    "site": "TEST",
     "backend_type": "Castor",
     "deterministic": false,
     "protocols": {
@@ -546,6 +533,7 @@
     "storage_usage_tool": "rucio.rse.protocols.webdav.Default.getSpace"
   },
   "WJ-XROOTD":{
+    "site": "TEST",
     "backend_type": "XROOTD",
     "deterministic": true,
     "protocols": {
