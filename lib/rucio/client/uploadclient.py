@@ -293,9 +293,10 @@ class UploadClient:
         logger.info(str(summary_exception))
 
         if num_succeeded == 0:
-            raise NoFilesUploaded()
+            exception = NoFilesUploaded
+            raise NoFilesUploaded('summary'=summary_exception)
         elif num_succeeded != len(files):
-            raise NotAllFilesUploaded()
+            raise NotAllFilesUploaded('summary'=summary_exception)
         return 0
 
     def _register_file(self, file, registered_dataset_dids):
