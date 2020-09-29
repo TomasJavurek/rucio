@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 # Authors:
-# - Thomas Beermann <thomas.beermann@cern.ch>, 2012-2020
+# - Thomas Beermann <thomas.beermann@cern.ch>, 2012-2013
 # - Vincent Garonne <vincent.garonne@cern.ch>, 2012-2018
 # - Yun-Pin Sun <winter0128@gmail.com>, 2013
 # - Mario Lassnig <mario.lassnig@cern.ch>, 2013-2020
@@ -368,7 +368,7 @@ class BaseClient(object):
             hds.update(headers)
 
         result = None
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.request_retries):
             try:
                 if type == 'GET':
                     result = self.session.get(url, headers=hds, verify=self.ca_cert, timeout=self.timeout, params=params, stream=True)
@@ -382,7 +382,7 @@ class BaseClient(object):
                     return
             except ConnectionError as error:
                 LOG.error('ConnectionError: ' + str(error))
-                if retry > self.request_retries:
+                if retry == self.request_retries - 1:
                     raise
                 continue
 
@@ -412,13 +412,13 @@ class BaseClient(object):
         url = build_url(self.auth_host, path='auth/userpass')
 
         result = None
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.AUTH_RETRIES):
             try:
                 result = self.session.get(url, headers=headers, verify=self.ca_cert)
                 break
             except ConnectionError as error:
                 LOG.error('ConnectionError: ' + str(error))
-                if retry > self.request_retries:
+                if retry == self.AUTH_RETRIES - 1:
                     raise
 
         if not result or 'result' not in locals():
@@ -466,7 +466,7 @@ class BaseClient(object):
                    'X-Rucio-Account': self.account,
                    'X-Rucio-Auth-Token': self.auth_token}
 
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.AUTH_RETRIES):
             try:
                 LOG.debug("JWT refresh attempt nr. %i" % int(retry + 1))
                 request_refresh_url = build_url(self.auth_host, path='auth/oidc_refresh')
@@ -498,7 +498,7 @@ class BaseClient(object):
                 break
             except RequestException:
                 LOG.error('RequestException: %s', str(traceback.format_exc()))
-                if retry > self.request_retries:
+                if retry == self.AUTH_RETRIES - 1:
                     raise
 
     def __get_token_OIDC(self):
@@ -527,7 +527,7 @@ class BaseClient(object):
             headers['X-Rucio-Client-Authorize-Issuer'] = str(self.creds['oidc_issuer'])
         if self.creds['oidc_auto']:
             userpass = {'username': self.creds['oidc_username'], 'password': self.creds['oidc_password']}
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.AUTH_RETRIES):
             LOG.debug("Authentication attempt nr. %i" % int(retry + 1))
             try:
                 start = time.time()
@@ -613,7 +613,7 @@ class BaseClient(object):
                 break
             except RequestException:
                 LOG.error('RequestException: %s', str(traceback.format_exc()))
-                if retry > self.request_retries:
+                if retry == self.AUTH_RETRIES - 1:
                     raise
 
         if not result or 'result' not in locals():
@@ -671,7 +671,7 @@ class BaseClient(object):
             cert = (client_cert, client_key)
 
         result = None
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.AUTH_RETRIES):
             try:
                 result = self.session.get(url, headers=headers, cert=cert, verify=self.ca_cert)
                 break
@@ -679,7 +679,7 @@ class BaseClient(object):
                 if 'alert certificate expired' in str(error):
                     raise CannotAuthenticate(str(error))
                 LOG.error('ConnectionError: ' + str(error))
-                if retry > self.request_retries:
+                if retry == self.AUTH_RETRIES - 1:
                     raise
 
         # Note a response object for a failed request evaluates to false, so we cannot
@@ -716,7 +716,7 @@ class BaseClient(object):
         url = build_url(self.auth_host, path='auth/ssh_challenge_token')
 
         result = None
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.AUTH_RETRIES):
             try:
                 result = self.session.get(url, headers=headers, verify=self.ca_cert)
                 break
@@ -724,7 +724,7 @@ class BaseClient(object):
                 if 'alert certificate expired' in str(error):
                     raise CannotAuthenticate(str(error))
                 LOG.error('ConnectionError: ' + str(error))
-                if retry > self.request_retries:
+                if retry == self.AUTH_RETRIES - 1:
                     raise
 
         if not result:
@@ -749,7 +749,7 @@ class BaseClient(object):
         url = build_url(self.auth_host, path='auth/ssh')
 
         result = None
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.AUTH_RETRIES):
             try:
                 result = self.session.get(url, headers=headers, verify=self.ca_cert)
                 break
@@ -757,7 +757,7 @@ class BaseClient(object):
                 if 'alert certificate expired' in str(error):
                     raise CannotAuthenticate(str(error))
                 LOG.error('ConnectionError: ' + str(error))
-                if retry > self.request_retries:
+                if retry == self.AUTH_RETRIES - 1:
                     raise
 
         if not result:
@@ -786,14 +786,14 @@ class BaseClient(object):
         url = build_url(self.auth_host, path='auth/gss')
 
         result = None
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.AUTH_RETRIES):
             try:
                 result = self.session.get(url, headers=headers,
                                           verify=self.ca_cert, auth=HTTPKerberosAuth())
                 break
             except ConnectionError as error:
                 LOG.error('ConnectionError: ' + str(error))
-                if retry > self.request_retries:
+                if retry == self.AUTH_RETRIES - 1:
                     raise
 
         if not result:
@@ -821,7 +821,7 @@ class BaseClient(object):
         url = build_url(self.auth_host, path='auth/saml')
 
         result = None
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.AUTH_RETRIES):
             try:
                 SAML_auth_result = self.session.get(url, headers=headers)
 
@@ -834,7 +834,7 @@ class BaseClient(object):
                 break
             except ConnectionError as error:
                 LOG.error('ConnectionError: ' + str(error))
-                if retry > self.request_retries:
+                if retry == self.AUTH_RETRIES - 1:
                     raise
 
         if not result or 'result' not in locals():
@@ -856,7 +856,7 @@ class BaseClient(object):
         """
 
         LOG.debug('get a new token')
-        for retry in range(self.AUTH_RETRIES + 1):
+        for retry in range(self.AUTH_RETRIES):
             if self.auth_type == 'userpass':
                 if not self.__get_token_userpass():
                     raise CannotAuthenticate('userpass authentication failed for account=%s with identity=%s' % (self.account,
