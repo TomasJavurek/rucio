@@ -54,6 +54,14 @@ def config_get(section, option, raise_exception=True, default=None):
         if raise_exception and default is None:
             raise err
         return default
+    except RuntimeError as err:
+        if raise_exception and default is None:
+            raise err
+        else:
+            # TODO: place a propper logging
+            print('The config file not found. Check rucio git repo for a template.')
+            print(str(err))
+            return default
 
 
 def config_has_section(section):
